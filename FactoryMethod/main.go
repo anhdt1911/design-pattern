@@ -23,14 +23,14 @@ func (b *WindownButton) onClick() {
 
 // abstract creator
 type Dialog interface {
-	newButton() *Button
+	newButton() Button
 }
 
 // concreate creator
 type WindownDialog struct {
 }
 
-func (wd *WindownDialog) newButton() Button {
+func (wd WindownDialog) newButton() Button {
 	return &WindownButton{}
 }
 
@@ -42,8 +42,16 @@ func (wed *WebDialog) newButton() Button {
 	return &HTMLButon{}
 }
 
+type Application struct {
+	d Dialog
+}
+
+func newApp(d Dialog) *Application {
+	return &Application{d}
+}
+
 func main() {
 	d := WindownDialog{}
-	b := d.newButton()
-	b.onClick()
+	app := newApp(d)
+	app.d.newButton().onClick()
 }
